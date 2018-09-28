@@ -50,9 +50,14 @@ const Tip = styled(BorderBox)`
   }
 `
 
+enum TipSize {
+  Sm = "sm",
+  Lg = "lg",
+}
+
 export interface TooltipProps {
   content: string
-  sm: boolean
+  size: TipSize
 }
 
 /**
@@ -130,7 +135,7 @@ export class Tooltip extends React.Component<TooltipProps> {
       >
         <Tip
           className={this.state.active && "active"}
-          p={this.props.sm ? 0.5 : 2}
+          p={this.props.size === TipSize.Sm ? 0.5 : 2}
           tipPosition={this.state.tipPosition}
         >
           <Sans size={"2"} color="black60">
