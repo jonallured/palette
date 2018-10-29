@@ -268,3 +268,21 @@ export interface DisplayProps extends Partial<TextProps> {
  * <Display color="black10" size="3t">Hi</Display>
  */
 export const Display = createStyledText<DisplayProps>("display")
+
+// some sketching around how the new Typography stuff might work
+
+export const Heading1 = () => {
+  return <Sans size="14" weight="regular" />
+}
+
+export const Heading2 = () => {
+  return <Serif size="8" weight="regular" />
+}
+
+export const Heading3 = ({family}) => {
+  if (family === "sans") {
+    return <Sans size="8" weight="regular" />
+  } else {
+    return <Serif size="8" weight="regular" />
+  }
+}
