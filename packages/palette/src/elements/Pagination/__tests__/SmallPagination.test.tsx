@@ -39,6 +39,119 @@ describe("SmallPagination", () => {
     window.matchMedia = matchMedia
   })
 
+  describe("when there is only a previous page", () => {
+    it("renders the previous button and calls the onClick function when clicked", () => {
+      const previous = { page: 5, cursor: "Y3Vyc29yMw==", isCurrent: false }
+      const pageCursors = { previous }
+
+      const onClickMock = jest.fn()
+      const onNextMock = jest.fn()
+
+      const wrapper = mount(
+        <Theme>
+          <SmallPagination
+            hasNextPage={false}
+            onClick={onClickMock}
+            onNext={onNextMock}
+            pageCursors={pageCursors}
+          />
+        </Theme>
+      )
+
+      wrapper
+        .find("ButtonWithBorder")
+        .first()
+        .simulate("click")
+
+      expect(onClickMock).toHaveBeenCalled()
+    })
+
+    it("renders the next button as disabled and calls the onNext function when clicked", () => {
+      const previous = { page: 5, cursor: "Y3Vyc29yMw==", isCurrent: false }
+      const pageCursors = { previous }
+
+      const onClickMock = jest.fn()
+      const onNextMock = jest.fn()
+
+      const wrapper = mount(
+        <Theme>
+          <SmallPagination
+            hasNextPage={false}
+            onClick={onClickMock}
+            onNext={onNextMock}
+            pageCursors={pageCursors}
+          />
+        </Theme>
+      )
+
+      wrapper
+        .find("ButtonWithBorder")
+        .last()
+        .simulate("click")
+
+      expect(onNextMock).toHaveBeenCalled()
+    })
+  })
+
+  describe("when there is only a next page", () => {
+    it("renders the previous button as disabled and does not call the onClick function when clicked", () => {
+      const pageCursors = { previous: null }
+
+      const onClickMock = jest.fn()
+      const onNextMock = jest.fn()
+
+      const wrapper = mount(
+        <Theme>
+          <SmallPagination
+            hasNextPage
+            onClick={onClickMock}
+            onNext={onNextMock}
+            pageCursors={pageCursors}
+          />
+        </Theme>
+      )
+
+      wrapper
+        .find("ButtonWithBorder")
+        .first()
+        .simulate("click")
+
+      expect(onClickMock).not.toHaveBeenCalled()
+    })
+
+    it("renders the next button and calls the onNext function when clicked", () => {
+      const pageCursors = { previous: null }
+
+      const onClickMock = jest.fn()
+      const onNextMock = jest.fn()
+
+      const wrapper = mount(
+        <Theme>
+          <SmallPagination
+            hasNextPage
+            onClick={onClickMock}
+            onNext={onNextMock}
+            pageCursors={pageCursors}
+          />
+        </Theme>
+      )
+
+      wrapper
+        .find("ButtonWithBorder")
+        .last()
+        .simulate("click")
+
+      expect(onNextMock).toHaveBeenCalled()
+    })
+  })
+
+  // describe("when there are previous and next pages", () => {
+  //   it(
+  //     "renders the previous button and calls the onClick function when clicked"
+  //   )
+  //   it("renders the next button and calls the onNext function when clicked")
+  // })
+
   it("triggers next callback on previous button click", () => {
     const spy = jest.fn()
     const wrapper = mount(
