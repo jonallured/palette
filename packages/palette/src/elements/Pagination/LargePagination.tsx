@@ -19,6 +19,7 @@ export interface PageCursors {
 }
 
 export interface Props {
+  getHref?: (page: number) => string
   onClick?: (cursor: string, page: number) => void
   onNext?: () => void
   pageCursors: PageCursors
@@ -33,6 +34,7 @@ export const LargePagination = (props: Props) => {
     onClick,
     onNext,
     hasNextPage,
+    getHref,
   } = props
 
   const handlePrevClick = () => {
@@ -48,7 +50,14 @@ export const LargePagination = (props: Props) => {
   const aroundPages = around.map(pageCursor => {
     const { cursor, page } = pageCursor
     const key = cursor + page
-    return <Page key={key} onClick={onClick} pageCursor={pageCursor} />
+    return (
+      <Page
+        key={key}
+        onClick={onClick}
+        pageCursor={pageCursor}
+        getHref={getHref}
+      />
+    )
   })
 
   return (
@@ -58,9 +67,13 @@ export const LargePagination = (props: Props) => {
       justifyContent="flex-end"
       mr={-1}
     >
-      {first && <FirstPage onClick={onClick} pageCursor={first} />}
+      {first && (
+        <FirstPage onClick={onClick} pageCursor={first} getHref={getHref} />
+      )}
       {aroundPages}
-      {last && <LastPage onClick={onClick} pageCursor={last} />}
+      {last && (
+        <LastPage onClick={onClick} pageCursor={last} getHref={getHref} />
+      )}
 
       <Box ml={4}>
         <PrevButton enabled={!!previous} onClick={handlePrevClick} />
@@ -71,12 +84,13 @@ export const LargePagination = (props: Props) => {
 }
 
 interface PageProps {
+  getHref?: (page: number) => string
   onClick?: (cursor: string, page: number) => void
   pageCursor: PageCursor
 }
 
 const Page: React.FC<PageProps> = props => {
-  const { onClick, pageCursor } = props
+  const { getHref, onClick, pageCursor } = props
   const { cursor, isCurrent, page } = pageCursor
 
   const handleClick = () => {
@@ -84,7 +98,8 @@ const Page: React.FC<PageProps> = props => {
   }
 
   const highlight = isCurrent ? "black5" : "white100"
-  const href = ""
+
+  const href = getHref(page)
 
   return (
     <Box bg={highlight} borderRadius={2}>
